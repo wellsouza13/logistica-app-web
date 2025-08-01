@@ -6,13 +6,11 @@ import { authService } from './services/authService';
 import { theme } from './styles/theme';
 import './App.css';
 
-// Componente para proteger rotas
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const isAuthenticated = authService.isAuthenticated();
   return isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />;
 };
 
-// Componente para redirecionar usuários já logados
 const PublicRoute = ({ children }: { children: React.ReactNode }) => {
   const isAuthenticated = authService.isAuthenticated();
   return isAuthenticated ? <Navigate to="/dashboard" replace /> : <>{children}</>;
