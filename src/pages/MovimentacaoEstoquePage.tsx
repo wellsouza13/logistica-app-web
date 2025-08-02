@@ -18,7 +18,14 @@ import { estoqueService } from '../services/estoqueService';
 import type { ItemEstoque } from '../services/estoqueService';
 import { movimentacaoService } from '../services/movimentacaoService';
 import type { MovimentacaoEstoque, RegistrarEntradaPayload, RegistrarSaidaPayload } from '../services/movimentacaoService';
+import { vendasService } from '../services/vendasService';
+import type { RegistrarVendaPayload } from '../services/vendasService';
 import { ROUTES } from '../routes/constants';
+
+// Interface estendida para incluir preço unitário
+interface FormDataMovimentacao extends RegistrarEntradaPayload, RegistrarSaidaPayload {
+  precoUnitario?: number;
+}
 
 // Componentes estilizados específicos da página
 const MovimentacaoContainer = styled.div`
@@ -191,11 +198,12 @@ export const MovimentacaoEstoquePage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
-  const [formData, setFormData] = useState<RegistrarEntradaPayload | RegistrarSaidaPayload>({
+  const [formData, setFormData] = useState<FormDataMovimentacao>({
     estoqueId: 0,
     quantidade: 0,
     motivo: '',
-    observacao: ''
+    observacao: '',
+    precoUnitario: 0
   });
   const [submitting, setSubmitting] = useState(false);
   const [tipoMovimentacao, setTipoMovimentacao] = useState<'ENTRADA' | 'SAIDA'>('ENTRADA');
@@ -225,7 +233,7 @@ export const MovimentacaoEstoquePage: React.FC = () => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: name === 'quantidade' || name === 'estoqueId' ? Number(value) : value
+      [name]: name === 'quantidade' || name === 'estoqueId' || name === 'precoUnitario' ? Number(value) : value
     }));
   };
 
@@ -235,7 +243,8 @@ export const MovimentacaoEstoquePage: React.FC = () => {
       estoqueId: 0,
       quantidade: 0,
       motivo: '',
-      observacao: ''
+      observacao: '',
+      precoUnitario: 0
     });
     setModalOpen(true);
   };
@@ -246,7 +255,8 @@ export const MovimentacaoEstoquePage: React.FC = () => {
       estoqueId: 0,
       quantidade: 0,
       motivo: '',
-      observacao: ''
+      observacao: '',
+      precoUnitario: 0
     });
   };
 
@@ -261,7 +271,28 @@ export const MovimentacaoEstoquePage: React.FC = () => {
         // Muda automaticamente para a aba de entradas após registrar
         setActiveTab('entrada');
       } else {
+        // Registrar saída
         await movimentacaoService.registrarSaida(formData as RegistrarSaidaPayload);
+        
+        // Se o motivo for VENDA, registrar também uma venda
+        if (formData.motivo === 'VENDA' && formData.precoUnitario && formData.precoUnitario > 0) {
+          try {
+            const vendaPayload: RegistrarVendaPayload = {
+              observacao: formData.observacao,
+              itens: [{
+                estoqueId: formData.estoqueId,
+                quantidade: formData.quantidade,
+                precoUnitario: formData.precoUnitario
+              }]
+            };
+            
+            await vendasService.registrarVenda(vendaPayload);
+          } catch (vendaError: any) {
+            console.warn('Erro ao registrar venda:', vendaError);
+            // Não falha a movimentação se a venda falhar
+          }
+        }
+        
         // Muda automaticamente para a aba de saídas após registrar
         setActiveTab('saida');
       }
@@ -579,6 +610,25 @@ export const MovimentacaoEstoquePage: React.FC = () => {
                 fullWidth
               />
             </FormGroup>
+
+            {/* Campo de preço unitário apenas para vendas */}
+            {formData.motivo === 'VENDA' && (
+              <FormGroup>
+                <Label htmlFor="precoUnitario">Preço Unitário (R$) *</Label>
+                <Input
+                  type="number"
+                  id="precoUnitario"
+                  name="precoUnitario"
+                  value={formData.precoUnitario}
+                  onChange={handleInputChange}
+                  required
+                  min="0.01"
+                  step="0.01"
+                  placeholder="0.00"
+                  fullWidth
+                />
+              </FormGroup>
+            )}
 
             <div style={{ display: 'flex', gap: '16px', marginTop: '24px' }}>
               <Button 
