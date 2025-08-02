@@ -8,6 +8,7 @@ export const PROTECTED_ROUTES = {
   DASHBOARD: '/dashboard',
   ESTOQUE: '/estoque',
   MOVIMENTACAO: '/movimentacao',
+  RELATORIOS: '/relatorios',
 } as const;
 
 // Todas as rotas

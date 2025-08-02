@@ -207,7 +207,11 @@ export const Dashboard: React.FC = () => {
               <CardIcon>📊</CardIcon>
               <Heading level={3}>Relatórios</Heading>
               <Text color="secondary">Visualize relatórios e métricas</Text>
-              <Button size="sm" style={{ marginTop: '16px' }}>
+              <Button 
+                size="sm" 
+                style={{ marginTop: '16px' }}
+                onClick={() => navigate(ROUTES.RELATORIOS)}
+              >
                 Acessar
               </Button>
             </DashboardCard>

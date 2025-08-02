@@ -4,6 +4,7 @@ import { Login } from '../pages/Login';
 import { Dashboard } from '../pages/Dashboard';
 import { GestaoEstoque } from '../pages/GestaoEstoque';
 import { MovimentacaoEstoquePage } from '../pages/MovimentacaoEstoquePage';
+import { Relatorios } from '../pages/Relatorios';
 import { authService } from '../services/authService';
 import { ROUTES } from './constants';
 
@@ -56,6 +57,15 @@ export const AppRoutes: React.FC = () => {
         element={
           <ProtectedRoute>
             <MovimentacaoEstoquePage />
+          </ProtectedRoute>
+        } 
+      />
+      
+      <Route 
+        path={ROUTES.RELATORIOS} 
+        element={
+          <ProtectedRoute>
+            <Relatorios />
           </ProtectedRoute>
         } 
       />

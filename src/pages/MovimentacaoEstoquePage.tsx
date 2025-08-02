@@ -258,8 +258,12 @@ export const MovimentacaoEstoquePage: React.FC = () => {
     try {
       if (tipoMovimentacao === 'ENTRADA') {
         await movimentacaoService.registrarEntrada(formData as RegistrarEntradaPayload);
+        // Muda automaticamente para a aba de entradas após registrar
+        setActiveTab('entrada');
       } else {
         await movimentacaoService.registrarSaida(formData as RegistrarSaidaPayload);
+        // Muda automaticamente para a aba de saídas após registrar
+        setActiveTab('saida');
       }
       
       await carregarDados();
@@ -356,6 +360,86 @@ export const MovimentacaoEstoquePage: React.FC = () => {
           </TabContainer>
 
           {error && <ErrorMessage>{error}</ErrorMessage>}
+
+          {activeTab === 'entrada' && (
+            <Grid>
+              {movimentacoes.filter(mov => mov.tipo === 'ENTRADA').length === 0 ? (
+                <EmptyState>
+                  <Text size="lg">Nenhuma entrada registrada</Text>
+                  <Text color="secondary">Registre uma entrada para começar</Text>
+                </EmptyState>
+              ) : (
+                movimentacoes
+                  .filter(mov => mov.tipo === 'ENTRADA')
+                  .map((mov) => (
+                    <MovimentacaoCard key={mov.id}>
+                      <MovimentacaoInfo>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <Heading level={4}>{mov.estoque.produto}</Heading>
+                          <StatusBadge tipo={mov.tipo}>
+                            {mov.tipo}
+                          </StatusBadge>
+                        </div>
+                        <Text>
+                          <strong>Quantidade:</strong> {formatarQuantidade(mov.quantidade, mov.estoque.unidade)}
+                        </Text>
+                        <Text>
+                          <strong>Motivo:</strong> {mov.motivo}
+                        </Text>
+                        {mov.observacao && (
+                          <Text>
+                            <strong>Observação:</strong> {mov.observacao}
+                          </Text>
+                        )}
+                        <Text size="sm" color="secondary">
+                          Responsável: {mov.responsavel.matricula} | {formatarData(mov.dataMovimentacao)}
+                        </Text>
+                      </MovimentacaoInfo>
+                    </MovimentacaoCard>
+                  ))
+              )}
+            </Grid>
+          )}
+
+          {activeTab === 'saida' && (
+            <Grid>
+              {movimentacoes.filter(mov => mov.tipo === 'SAIDA').length === 0 ? (
+                <EmptyState>
+                  <Text size="lg">Nenhuma saída registrada</Text>
+                  <Text color="secondary">Registre uma saída para começar</Text>
+                </EmptyState>
+              ) : (
+                movimentacoes
+                  .filter(mov => mov.tipo === 'SAIDA')
+                  .map((mov) => (
+                    <MovimentacaoCard key={mov.id}>
+                      <MovimentacaoInfo>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <Heading level={4}>{mov.estoque.produto}</Heading>
+                          <StatusBadge tipo={mov.tipo}>
+                            {mov.tipo}
+                          </StatusBadge>
+                        </div>
+                        <Text>
+                          <strong>Quantidade:</strong> {formatarQuantidade(mov.quantidade, mov.estoque.unidade)}
+                        </Text>
+                        <Text>
+                          <strong>Motivo:</strong> {mov.motivo}
+                        </Text>
+                        {mov.observacao && (
+                          <Text>
+                            <strong>Observação:</strong> {mov.observacao}
+                          </Text>
+                        )}
+                        <Text size="sm" color="secondary">
+                          Responsável: {mov.responsavel.matricula} | {formatarData(mov.dataMovimentacao)}
+                        </Text>
+                      </MovimentacaoInfo>
+                    </MovimentacaoCard>
+                  ))
+              )}
+            </Grid>
+          )}
 
           {activeTab === 'historico' && (
             <Grid>
