@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { authService } from '../services/authService';
+import { ROUTES } from '../routes/constants';
 import { 
   Button, 
   Card, 
@@ -101,6 +103,7 @@ const LoadingContainer = styled.div`
 `;
 
 export const Dashboard: React.FC = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -110,7 +113,7 @@ export const Dashboard: React.FC = () => {
       const isAuthenticated = authService.isAuthenticated();
       
       if (!currentUser || !isAuthenticated) {
-        window.location.href = '/login';
+        window.location.href = ROUTES.LOGIN;
         return;
       }
       
@@ -125,7 +128,7 @@ export const Dashboard: React.FC = () => {
   const handleLogout = async () => {
     try {
       await authService.logout();
-      window.location.href = '/login';
+      window.location.href = ROUTES.LOGIN;
     } catch (error) {
       console.error('Erro ao fazer logout:', error);
       window.location.href = '/login';
@@ -169,7 +172,11 @@ export const Dashboard: React.FC = () => {
               <CardIcon>📦</CardIcon>
               <Heading level={3}>Gestão de Estoque</Heading>
               <Text color="secondary">Controle de entrada e saída de produtos</Text>
-              <Button size="sm" style={{ marginTop: '16px' }}>
+              <Button 
+                size="sm" 
+                style={{ marginTop: '16px' }}
+                onClick={() => navigate(ROUTES.ESTOQUE)}
+              >
                 Acessar
               </Button>
             </DashboardCard>

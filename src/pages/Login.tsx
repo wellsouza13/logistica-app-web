@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { authService } from '../services/authService';
 import type { LoginPayload } from '../services/authService';
+import { ROUTES } from '../routes/constants';
 import { 
   Button, 
   Input, 
@@ -66,7 +67,7 @@ export const Login: React.FC = () => {
     try {
       const response = await authService.login(formData);
       localStorage.setItem('token', response.token);
-      window.location.href = '/dashboard';
+      window.location.href = ROUTES.DASHBOARD;
     } catch (err: any) {
       setError(err.response?.data?.message || 'Erro ao fazer login');
     } finally {

@@ -16,15 +16,21 @@ src/
 ├── services/
 │   ├── api.ts          # Configuração do axios e interceptors
 │   ├── interceptors.ts # Interceptors para requisições/respostas
-│   └── authService.ts  # Serviços de autenticação
+│   ├── authService.ts  # Serviços de autenticação
+│   └── estoqueService.ts # Serviços de gestão de estoque
+├── routes/
+│   ├── index.tsx       # Componente principal de rotas
+│   ├── constants.ts    # Constantes das rotas
+│   └── utils.ts        # Utilitários de navegação
 ├── styles/
 │   ├── theme.ts        # Sistema de tema com cores e espaçamentos
 │   ├── components.ts   # Componentes estilizados reutilizáveis
 │   └── styled.d.ts    # Declaração de tipos para styled-components
 ├── pages/
 │   ├── Login.tsx       # Página de login
-│   └── Dashboard.tsx   # Página do dashboard
-└── App.tsx             # Componente principal com rotas
+│   ├── Dashboard.tsx   # Página do dashboard
+│   └── GestaoEstoque.tsx # Página de gestão de estoque
+└── App.tsx             # Componente principal
 ```
 
 ## Configuração
