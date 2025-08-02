@@ -273,6 +273,9 @@ export const GestaoEstoque: React.FC = () => {
                 {estoque.length} item{estoque.length !== 1 ? 's' : ''} no estoque
               </Text>
             </div>
+            <Button onClick={() => navigate(ROUTES.MOVIMENTACAO)}>
+              📊 Movimentação
+            </Button>
           </ActionBar>
 
           {error && <ErrorMessage>{error}</ErrorMessage>}

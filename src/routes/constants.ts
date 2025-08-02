@@ -7,6 +7,7 @@ export const PUBLIC_ROUTES = {
 export const PROTECTED_ROUTES = {
   DASHBOARD: '/dashboard',
   ESTOQUE: '/estoque',
+  MOVIMENTACAO: '/movimentacao',
 } as const;
 
 // Todas as rotas

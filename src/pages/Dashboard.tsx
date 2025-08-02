@@ -182,6 +182,19 @@ export const Dashboard: React.FC = () => {
             </DashboardCard>
 
             <DashboardCard>
+              <CardIcon>📊</CardIcon>
+              <Heading level={3}>Movimentação</Heading>
+              <Text color="secondary">Registre entradas e saídas do estoque</Text>
+              <Button 
+                size="sm" 
+                style={{ marginTop: '16px' }}
+                onClick={() => navigate(ROUTES.MOVIMENTACAO)}
+              >
+                Acessar
+              </Button>
+            </DashboardCard>
+
+            <DashboardCard>
               <CardIcon>🚚</CardIcon>
               <Heading level={3}>Entregas</Heading>
               <Text color="secondary">Acompanhe o status das entregas</Text>

@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { Login } from '../pages/Login';
 import { Dashboard } from '../pages/Dashboard';
 import { GestaoEstoque } from '../pages/GestaoEstoque';
+import { MovimentacaoEstoquePage } from '../pages/MovimentacaoEstoquePage';
 import { authService } from '../services/authService';
 import { ROUTES } from './constants';
 
@@ -46,6 +47,15 @@ export const AppRoutes: React.FC = () => {
         element={
           <ProtectedRoute>
             <GestaoEstoque />
+          </ProtectedRoute>
+        } 
+      />
+      
+      <Route 
+        path={ROUTES.MOVIMENTACAO} 
+        element={
+          <ProtectedRoute>
+            <MovimentacaoEstoquePage />
           </ProtectedRoute>
         } 
       />
